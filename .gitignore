@@ -1,0 +1,47 @@
+.python-version
+.DS_Store
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$PYTHONWARNINGS
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Logs and runtime files
+*.log
+*.out
+*.pid
+*.swp
+*.swo
+
+# Cache files
+.cache/
+*.pyc
+*.pyo
+*.pyd
+
+pytest_cache/
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Distribution files
+dist/
+build/
+
+# Environment variables & secrets
+.env
+*.env
+secrets.json
+
+.aws-sam
+samconfig.toml
+
+response.json
+del.txt
+
