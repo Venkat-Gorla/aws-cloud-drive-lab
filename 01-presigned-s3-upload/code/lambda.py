@@ -34,6 +34,12 @@ def handler(event, context):
     filename = body["filename"]
     content_type = body["content_type"]
 
+    if "/" in filename or filename in (".", ".."):
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"error": "Invalid filename"}),
+        }
+
     object_key = f"uploads/{user_id}/{filename}"
 
     url = generate_upload_url(
