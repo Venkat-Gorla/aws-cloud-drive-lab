@@ -1,0 +1,12 @@
+{
+  "document_id": "doc-001",
+  "title": "AWS Cloud Drive POC",
+  "owner": "user-123",
+  "description": "Sample JSON document for testing pre-signed S3 uploads.",
+  "metadata": {
+    "lab": 1,
+    "upload_type": "single-put",
+    "region": "ap-south-1"
+  },
+  "tags": ["aws", "s3", "presigned-url"]
+}
