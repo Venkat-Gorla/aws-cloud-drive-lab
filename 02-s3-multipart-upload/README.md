@@ -30,11 +30,12 @@
               S3                        S3
               │                         │
               │ ETag                    │ ETag
-              ▼                         ▼
-         Client collects ETags
-              │
-              │ UploadId + Part Numbers + ETags
-              ▼
+              └────────────┼────────────┘
+                           ▼
+                  Client collects ETags
+                           │
+                           │ UploadId + Part Numbers + ETags
+                           ▼
                      Backend (Lambda)
                            │
                            │ CompleteMultipartUpload
