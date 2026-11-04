@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 from multipart_upload_handler import handler
 import requests
+from upload_completion_handler import handler as upload_completion_handler
 
 FILE_PATH = Path("code/fixtures/sample-document.pdf")
 PART_SIZE = 5 * 1024 * 1024  # 5 MiB
@@ -96,6 +97,16 @@ def main():
     uploaded_parts = upload_file_parts(FILE_PATH, part_urls)
 
     print(f"\nSuccessfully uploaded {len(uploaded_parts)} parts to S3.")
+
+    completion_event = get_completion_event(
+        initiation_body["upload_id"],
+        uploaded_parts,
+    )
+
+    completion_response = upload_completion_handler(completion_event, None)
+    completion_body = validate_response(completion_response)
+
+    print("\nMultipart upload completed successfully.")
 
 
 if __name__ == "__main__":
