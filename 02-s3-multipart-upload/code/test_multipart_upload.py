@@ -22,10 +22,9 @@ def print_response(response):
     print(f"Upload ID   : {body['upload_id']}")
 
     print("\nGenerated Part URLs:")
-
     for part in body["part_urls"]:
-        print(f"  Part Number : {part['part_number']}")
-        print("  Upload URL  : Generated successfully")
+        assert part["upload_url"]
+        print(f"  Part {part['part_number']} : Upload URL generated")
 
 
 def main():
