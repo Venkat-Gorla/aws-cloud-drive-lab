@@ -31,3 +31,12 @@ def generate_presigned_part_url(
         ExpiresIn=expires_in,
         HttpMethod="PUT",
     )
+
+
+def complete_multipart_upload(s3_client, bucket, key, upload_id, parts):
+    return s3_client.complete_multipart_upload(
+        Bucket=bucket,
+        Key=key,
+        UploadId=upload_id,
+        MultipartUpload={"Parts": parts},
+    )

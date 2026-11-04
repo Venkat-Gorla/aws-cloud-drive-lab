@@ -85,6 +85,8 @@ def main():
     part_urls = body["part_urls"]
     uploaded_parts = upload_file_parts(FILE_PATH, part_urls)
 
+    print(f"\nSuccessfully uploaded {len(uploaded_parts)} parts to S3.")
+
 
 if __name__ == "__main__":
     main()
