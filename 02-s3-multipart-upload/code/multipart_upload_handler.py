@@ -41,12 +41,15 @@ def handler(event, context):
 
     object_key = f"lab-02-multipart/{user_id}/{filename}"
 
-    upload_id = initiate_multipart_upload(
-        s3_client=s3,
-        bucket=BUCKET_NAME,
-        key=object_key,
-        content_type=content_type,
-    )
+    upload_id = body.get("upload_id")
+
+    if not upload_id:
+        upload_id = initiate_multipart_upload(
+            s3_client=s3,
+            bucket=BUCKET_NAME,
+            key=object_key,
+            content_type=content_type,
+        )
 
     part_urls = get_part_urls(object_key, upload_id, number_of_parts)
 
