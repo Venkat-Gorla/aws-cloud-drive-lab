@@ -27,7 +27,7 @@ def get_upload_id():
     return upload_id or None
 
 
-def get_upload_event(number_of_parts, upload_id):
+def get_initiation_event(number_of_parts, upload_id):
     body = {
         "filename": FILE_PATH.name,
         "content_type": "application/pdf",
@@ -74,15 +74,25 @@ def upload_file_parts(file_path, part_urls):
     return uploaded_parts
 
 
+def get_completion_event(upload_id, parts):
+    return {
+        "body": json.dumps({
+            "filename": FILE_PATH.name,
+            "upload_id": upload_id,
+            "parts": parts,
+        })
+    }
+
+
 def main():
     _, number_of_parts = inspect_file(FILE_PATH)
     upload_id = get_upload_id()
-    upload_event = get_upload_event(number_of_parts, upload_id)
+    initiation_event = get_initiation_event(number_of_parts, upload_id)
 
-    response = handler(upload_event, None)
+    initiation_response = handler(initiation_event, None)
 
-    body = validate_response(response)
-    part_urls = body["part_urls"]
+    initiation_body = validate_response(initiation_response)
+    part_urls = initiation_body["part_urls"]
     uploaded_parts = upload_file_parts(FILE_PATH, part_urls)
 
     print(f"\nSuccessfully uploaded {len(uploaded_parts)} parts to S3.")
