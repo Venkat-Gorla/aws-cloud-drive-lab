@@ -5,6 +5,7 @@ uv run code/multipart_upload_client.py
 from pathlib import Path
 import json
 from multipart_upload_handler import handler
+import requests
 
 FILE_PATH = Path("code/fixtures/sample-document.pdf")
 PART_SIZE = 5 * 1024 * 1024  # 5 MiB
@@ -52,13 +53,37 @@ def validate_response(response):
     return json.loads(response["body"])
 
 
+def upload_file_parts(file_path, part_urls):
+    uploaded_parts = []
+
+    with file_path.open("rb") as file:
+        for part in part_urls:
+            part_data = file.read(PART_SIZE)
+
+            response = requests.put(
+                part["upload_url"],
+                data=part_data,
+            )
+            response.raise_for_status()
+
+            uploaded_parts.append({
+                "PartNumber": part["part_number"],
+                "ETag": response.headers["ETag"],
+            })
+
+    return uploaded_parts
+
+
 def main():
     _, number_of_parts = inspect_file(FILE_PATH)
     upload_id = get_upload_id()
     upload_event = get_upload_event(number_of_parts, upload_id)
 
     response = handler(upload_event, None)
-    validate_response(response)
+
+    body = validate_response(response)
+    part_urls = body["part_urls"]
+    uploaded_parts = upload_file_parts(FILE_PATH, part_urls)
 
 
 if __name__ == "__main__":
