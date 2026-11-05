@@ -1,0 +1,22 @@
+Bucket name:
+aws-cloud-drive-vg
+
+- single file upload command
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  --upload-file code/sample.json \
+  "<PRE_SIGNED_URL>"
+
+- multipart upload id command
+aws s3api list-multipart-uploads --bucket aws-cloud-drive-vg --prefix lab-02-multipart/user-123/ --region ap-south-1
+
+- How to verify uploaded parts
+aws s3api list-parts \
+  --bucket aws-cloud-drive-vg \
+  --key lab-02-multipart/user-123/sample-document.pdf \
+  --upload-id "<YOUR_UPLOAD_ID>" \
+  --region ap-south-1
+
+- verify finalized object in s3:
+aws s3api head-object --bucket aws-cloud-drive-vg --key lab-02-multipart/user-123/sample-document.pdf --region ap-south-1
+
